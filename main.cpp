@@ -22,7 +22,7 @@ void mirror();
 void shuffle();
 void blur();
 
-unsigned char image[256][256];
+unsigned char image[SIZE][SIZE][RGB];
 
 
 int main()
@@ -107,7 +107,20 @@ void savePicture()
 	writeRGBBMP(imageName, image);
 }
 void blackWhite(){
-
+    for(int x = 0; x < SIZE; x++){
+        for(int y = 0; y < SIZE; y++){
+            if((image[x][y][0]+image[x][y][1]+image[x][y][2]) > 381){
+                for(int z = 0; z < RGB; z++){
+                    image[x][y][z] = 255;
+                }
+            }
+            else{
+                for(int z = 0; z < RGB; z++){
+                    image[x][y][z] = 0;
+                }
+            }
+        }
+    }
 }
 void invert(){
 
@@ -116,7 +129,23 @@ void _merge(){
 
 }
 void flip(){
-
+    cout << "please choose how to flip the image\n1- horizontally\n2- vertically\n";
+    int choose;
+    cin >> choose;
+    if(choose == 1){
+        for(int x = 0; x<SIZE; x++){
+            for(int y = 0; y<SIZE/2; y++){
+                swap(image[x][y], image[x][255-y]);
+            }
+        }
+    }
+    else{
+        for(int x = 0; x<SIZE/2; x++){
+            for(int y = 0; y<SIZE; y++){
+                swap(image[x][y], image[255-x][y]);
+            }
+        }
+    }
 }
 void _rotate(){
 
@@ -125,7 +154,27 @@ void darkenLighten(){
 
 }
 void detectEdges(){
-
+    bool isDifferentColor;
+    for(int x = 0; x < SIZE; x++){
+        for(int y = 0; y < SIZE; y++){
+            isDifferentColor = false;
+            for(int z = 0; z < RGB; z++){
+                if(abs(image[x][y][z] - image[x][y+1][z]) > 30 || abs(image[x][y][z] - image[x+1][y][z]) > 30){
+                    isDifferentColor = true;
+                }
+            }
+            if(isDifferentColor){
+                for(int z = 0; z < RGB; z++){
+                    image[x][y][z] = 0;
+                }
+            }
+            else{
+                for(int z = 0; z < RGB; z++){
+                    image[x][y][z] = 255;
+                }
+            }
+        }
+    }
 }
 void enlarge(){
 
@@ -134,7 +183,51 @@ void shrink(){
 
 }
 void mirror(){
-
+    int startRowPixel, endRowPixel, startColumnPixel, endColumnPixel;
+    int a;
+    cout << "1- right \n2- left \n3- down \n4- up" << endl;
+    cin >> a;
+    if(a == 1){
+        startRowPixel = 0;
+        endRowPixel = SIZE;
+        startColumnPixel = 0;
+        endColumnPixel = 127;
+    }
+    else if(a == 2){
+        startRowPixel = 0;
+        endRowPixel = SIZE;
+        startColumnPixel = 127;
+        endColumnPixel = SIZE;
+    }
+    else if(a == 3){
+        startRowPixel = 0;
+        endRowPixel = 127;
+        startColumnPixel = 0;
+        endColumnPixel = SIZE;
+    }
+    else if(a == 4){
+        startRowPixel = 127;
+        endRowPixel = SIZE;
+        startColumnPixel = 0;
+        endColumnPixel = SIZE;
+    }
+    else{
+        return mirror();
+    }
+    for(int x = startRowPixel; x<endRowPixel; x++){
+        for(int y = startColumnPixel; y<endColumnPixel; y++){
+            if(startRowPixel == 0 && endRowPixel == SIZE){
+                for(int z = 0; z < RGB; z++){
+                    image[x][y][z] = image[x][255-y][z];
+                }
+            }
+            else{
+                for(int z = 0; z < RGB; z++){
+                    image[x][y][z] = image[255-x][y][z];
+                }
+            }
+        }
+    }
 }
 void shuffle(){
 
