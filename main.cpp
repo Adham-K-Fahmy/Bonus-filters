@@ -61,7 +61,7 @@ int main()
         }
         else if(userChoice == "5"){
             int choice;
-            cout << "plaese enter your choice 90 or 180 or 270 : \n";
+            cout << "please enter your choice 90 or 180 or 270 : \n";
             cin >> choice;
             if (choice == 90)
             {
@@ -165,7 +165,31 @@ void invert(){
 
 }
 void _merge(){
+    // open the second image
+    unsigned char image2[SIZE][SIZE][RGB];
+    unsigned char new_image[SIZE][SIZE][RGB];
+    cout << "Please enter the second image name:\n";
+        char imageName[100];
+        cin >> imageName;
+        strcat(imageName, ".bmp");
+        readRGBBMP(imageName, image2);
 
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j< SIZE; j++) {
+            for (int k = 0; k < 3; k++) {
+                new_image[i][j][k]=(image[i][j][k]+image2[i][j][k])/2;
+            }
+        }
+    }
+    //save the new image
+    {
+        char imageName[100];
+        cout << "Please enter the filtered photo name : ";
+        cin >> imageName;
+        strcat(imageName, ".bmp");
+        writeRGBBMP(imageName, new_image);
+    }
 }
 void flip(){
     cout << "please choose how to flip the image\n1- horizontally\n2- vertically\n";
@@ -212,6 +236,43 @@ void _rotate(){
 
 }
 void darkenLighten(){
+    int choice;
+    unsigned char new_image[SIZE][SIZE][RGB];
+    cout << "Do you want to \n 1-Lighten \n 2-Darken\n";
+    cin >> choice;
+    //lighten
+    if(choice==1){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j< SIZE; j++) {
+                for (int k = 0; k < 3; k++) {
+                    new_image[i][j][k]=(image[i][j][k]+255)/2;
+                }
+            }
+        }
+    }
+        //darken
+    else if(choice==2) {
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j< SIZE; j++) {
+                for (int k = 0; k < 3; k++) {
+                    new_image[i][j][k]=image[i][j][k]/2;
+                }
+            }
+        }
+    }
+
+    else
+        cout << "Please enter a valid choice\n";
+
+    //save the new image
+    {
+        char imageName[100];
+        cout << "Please enter the filtered photo name : ";
+        cin >> imageName;
+        strcat(imageName, ".bmp");
+        writeRGBBMP(imageName, new_image);
+    }
 
 }
 void detectEdges(){
@@ -429,7 +490,30 @@ void enlarge(){
 
 }
 void shrink(){
+    int factor;
+    unsigned char new_image[SIZE][SIZE][RGB]={0};
+    cout << "Please enter the factor to shrink the image dimensions by it :\n";
+    cin >> factor;
+    if (factor <= 1)
+        cout << "Please enter a valid  number greater than 1\n";
+    else{
+        for (int i = 0; i < SIZE; i++ ){
+            for (int j = 0; j< SIZE; j++) {
+                for (int k = 0; k < 3; k++) {
+                    new_image[i/factor][j/factor][k]=(image[i][j][k]+image[i][j+1][k]+image[i][j-1][k]+image[i-1][j][k]+image[i+1][j][k])/5;
+                }
+            }
+        }
+    }
 
+    //save the new image
+    {
+        char imageName[100];
+        cout << "Please enter the filtered photo name : ";
+        cin >> imageName;
+        strcat(imageName, ".bmp");
+        writeRGBBMP(imageName, new_image);
+    }
 }
 void mirror(){
     int startRowPixel, endRowPixel, startColumnPixel, endColumnPixel;
@@ -777,5 +861,28 @@ void shuffle(){
 
 }
 void blur(){
+    unsigned char new_image[SIZE][SIZE][RGB];
+    int pixels_average1;
+    int pixels_average2;
+    int pixels_average3;
+    for (int i = 0; i < SIZE; i++ ){
+        for (int j = 0; j< SIZE; j++) {
 
+            pixels_average1 = (image[i][j][0]+image[i][j-1][0]+image[i][j-2][0]+image[i][j+1][0]+image[i][j+2][0]+image[i-1][j][0]+image[i-1][j-1][0]+image[i-1][j-2][0]+image[i-1][j+1][0]+image[i-1][j+2][0]+image[i-2][j][0]+image[i-2][j-1][0]+image[i-2][j-2][0]+image[i-2][j+1][0]+image[i-2][j+2][0]+image[i+1][j][0]+image[i+1][j-1][0]+image[i+1][j-2][0]+image[i+1][j+1][0]+image[i+1][j+2][0]+image[i+2][j][0]+image[i+2][j-1][0]+image[i+2][j-2][0]+image[i+2][j+1][0]+image[i+2][j+2][0])/25;
+            pixels_average2 = (image[i][j][1]+image[i][j-1][1]+image[i][j-2][1]+image[i][j+1][1]+image[i][j+2][1]+image[i-1][j][1]+image[i-1][j-1][1]+image[i-1][j-2][1]+image[i-1][j+1][1]+image[i-1][j+2][1]+image[i-2][j][1]+image[i-2][j-1][1]+image[i-2][j-2][1]+image[i-2][j+1][1]+image[i-2][j+2][1]+image[i+1][j][1]+image[i+1][j-1][1]+image[i+1][j-2][1]+image[i+1][j+1][1]+image[i+1][j+2][1]+image[i+2][j][1]+image[i+2][j-1][1]+image[i+2][j-2][1]+image[i+2][j+1][1]+image[i+2][j+2][1])/25;
+            pixels_average3 = (image[i][j][2]+image[i][j-1][2]+image[i][j-2][2]+image[i][j+1][2]+image[i][j+2][2]+image[i-1][j][2]+image[i-1][j-1][2]+image[i-1][j-2][2]+image[i-1][j+1][2]+image[i-1][j+2][2]+image[i-2][j][2]+image[i-2][j-1][2]+image[i-2][j-2][2]+image[i-2][j+1][2]+image[i-2][j+2][2]+image[i+1][j][2]+image[i+1][j-1][2]+image[i+1][j-2][2]+image[i+1][j+1][2]+image[i+1][j+2][2]+image[i+2][j][2]+image[i+2][j-1][2]+image[i+2][j-2][2]+image[i+2][j+1][2]+image[i+2][j+2][2])/25;
+            new_image[i][j][0]=pixels_average1;
+            new_image[i][j][1]=pixels_average2;
+            new_image[i][j][2]=pixels_average3;
+
+        }
+    }
+    //save the new image
+    {
+        char imageName[100];
+        cout << "Please enter the filtered photo name : ";
+        cin >> imageName;
+        strcat(imageName, ".bmp");
+        writeRGBBMP(imageName, new_image);
+    }
 }
