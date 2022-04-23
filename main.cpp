@@ -1,5 +1,5 @@
 // FCI – Programming 1 – 2022 - Assignment 3
-// Program Name: 12 filters filter.cpp
+// Program Name: 12 colored filters filter.cpp
 // Last Modification Date: 23/04/2022
 // Author1 and ID and Group: Abdelrahman nasr aqll khalil 20210211
 // Author2 and ID and Group: Adham Khalid Fahmy 20210050
