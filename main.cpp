@@ -1,3 +1,10 @@
+// FCI – Programming 1 – 2022 - Assignment 3
+// Program Name: 12 filters filter.cpp
+// Last Modification Date: 23/04/2022
+// Author1 and ID and Group: Abdelrahman nasr aqll khalil 20210211
+// Author2 and ID and Group: Adham Khalid Fahmy 20210050
+// Author3 and ID and Group: ahmed amer 20210534
+// Teaching Assistant: Eng.Hager
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -5,7 +12,7 @@
 #include "bmplib.cpp"
 
 using namespace std;
-
+// declaring functions
 void openPicture();
 void savePicture();
 void pictureFilter();
@@ -29,6 +36,7 @@ int main()
 {
     cout << "Please enter file name of the image to process: "<< endl;
     openPicture();
+    // selection menue loop
     while(true){
         cout << "Please select a filter to apply or 0 to exit: " << endl;
         cout << "1- Black & White Filter" << endl;
@@ -45,6 +53,7 @@ int main()
         cout << "c- Blur Image" << endl;
         cout << "s- Save the image to a file" << endl;
         cout << "0- Exit" << endl;
+        // user choice
         string userChoice;
         cin >> userChoice;
         if(userChoice == "1"){
@@ -63,6 +72,7 @@ int main()
             int choice;
             cout << "please enter your choice 90 or 180 or 270 : \n";
             cin >> choice;
+            //user choices for for rotation degree
             if (choice == 90)
             {
 	            _rotate();
@@ -125,6 +135,7 @@ void savePicture()
 	writeRGBBMP(imageName, image);
 }
 void blackWhite(){
+    // loop to convert the image to black and white 
     for(int x = 0; x < SIZE; x++){
         for(int y = 0; y < SIZE; y++){
             if((image[x][y][0]+image[x][y][1]+image[x][y][2]) > 381){
@@ -132,6 +143,7 @@ void blackWhite(){
                     image[x][y][z] = 255;
                 }
             }
+            // to convert pixel to black
             else{
                 for(int z = 0; z < RGB; z++){
                     image[x][y][z] = 0;
@@ -141,6 +153,7 @@ void blackWhite(){
     }
 }
 void invert(){
+    // to loop on the array elements
     for (int i = 0 ; i < 256 ; i++)
     {
         for (int j = 0 ; j < 256 ; j++)
@@ -192,10 +205,12 @@ void _merge(){
     }
 }
 void flip(){
+    // enter the user choice for darken lighten
     cout << "please choose how to flip the image\n1- horizontally\n2- vertically\n";
     int choose;
     cin >> choose;
     if(choose == 1){
+        // swap the first element to the last element an so on verticaly
         for(int x = 0; x<SIZE; x++){
             for(int y = 0; y<SIZE/2; y++){
                 swap(image[x][y], image[x][255-y]);
@@ -203,6 +218,7 @@ void flip(){
         }
     }
     else{
+        // swap the first element to the last element an so on Horizontaly
         for(int x = 0; x<SIZE/2; x++){
             for(int y = 0; y<SIZE; y++){
                 swap(image[x][y], image[255-x][y]);
@@ -211,6 +227,7 @@ void flip(){
     }
 }
 void _rotate(){
+    // rotate the image by 90 degree
     unsigned char newImage[256][256][3];
     for (int i = 0; i < 256; i++)
 	{
@@ -276,6 +293,7 @@ void darkenLighten(){
 
 }
 void detectEdges(){
+    // drow the lines
     bool isDifferentColor;
     for(int x = 0; x < SIZE; x++){
         for(int y = 0; y < SIZE; y++){
@@ -290,6 +308,7 @@ void detectEdges(){
                     image[x][y][z] = 0;
                 }
             }
+            // change the colors to white
             else{
                 for(int z = 0; z < RGB; z++){
                     image[x][y][z] = 255;
@@ -299,16 +318,19 @@ void detectEdges(){
     }
 }
 void enlarge(){
+    // declare quarters
     unsigned char firstQuarter[128][128][3];
     unsigned char secondQuarter[128][128][3];
     unsigned char thirdQuarter[128][128][3];
     unsigned char fourthQuarter[128][128][3];
     int userChoice;
+    // get the user choice
     cout << "Which quarter to enlarge 1, 2, 3 or 4?";
     cin >> userChoice;
 
     if (userChoice == 1)
     {
+        // extact the first quarter
         for (int i = 0; i < 128; i++)
         {
             for (int j = 0; j < 128; j++)
@@ -319,6 +341,7 @@ void enlarge(){
                 }
             }
         }
+        // largen 
         for (int i = 0 ; i < 128 ; i++)
         {
             for (int j = 0 ; j < 128 ; j++)
@@ -329,6 +352,7 @@ void enlarge(){
                 }
             }
         }
+        // put the largen pixels togather
         for (int i = 0 ; i < 256 ; i++)
         {
             for (int j = 1 ; j < 256 ; j+=2)
@@ -355,6 +379,7 @@ void enlarge(){
 
     if (userChoice == 2)
     {
+        // extract the quarter
         for (int i = 0; i < 128; i++)
         {
             for (int j = 128; j < 256; j++)
@@ -365,6 +390,7 @@ void enlarge(){
                 }
             }
         }
+        // largen
         for (int i = 0 ; i < 128 ; i++)
         {
             for (int j = 0 ; j < 128 ; j++)
@@ -375,6 +401,7 @@ void enlarge(){
                 }
             }
         }
+        //fill the image
         for (int i = 0 ; i < 256 ; i++)
         {
             for (int j = 1 ; j < 256 ; j+=2)
@@ -400,6 +427,7 @@ void enlarge(){
 
     if (userChoice == 3)
     {
+        //extract the quarters
         for (int i = 128; i < 256; i++)
         {
             for (int j = 0; j < 128; j++)
@@ -410,6 +438,7 @@ void enlarge(){
                 }
             }
         }
+        //largen
         for (int i = 0 ; i < 128 ; i++)
         {
             for (int j = 0 ; j < 128 ; j++)
@@ -420,6 +449,7 @@ void enlarge(){
                 }
             }
         }
+        //fill the image
         for (int i = 0 ; i < 256 ; i++)
         {
             for (int j = 1 ; j < 256 ; j+=2)
@@ -445,6 +475,7 @@ void enlarge(){
 
     if (userChoice == 4)
     {
+        // extract the quarters
         for (int i = 128; i < 256; i++)
         {
             for (int j = 128; j < 256; j++)
@@ -455,6 +486,7 @@ void enlarge(){
                 }
             }
         }
+        //largen
         for (int i = 0 ; i < 128 ; i++)
         {
             for (int j = 0 ; j < 128 ; j++)
@@ -465,6 +497,7 @@ void enlarge(){
                 }
             }
         }
+        // fiil the image
         for (int i = 0 ; i < 256 ; i++)
         {
             for (int j = 1 ; j < 256 ; j+=2)
@@ -491,6 +524,7 @@ void enlarge(){
 }
 void shrink(){
     int factor;
+    // shrinking image to 1/2 and 1/3 and 1/4
     unsigned char new_image[SIZE][SIZE][RGB]={0};
     cout << "Please enter the factor to shrink the image dimensions by it :\n";
     cin >> factor;
@@ -520,6 +554,7 @@ void mirror(){
     int a;
     cout << "1- right \n2- left \n3- down \n4- up" << endl;
     cin >> a;
+    // conditions to get the start and end points
     if(a == 1){
         startRowPixel = 0;
         endRowPixel = SIZE;
@@ -547,6 +582,7 @@ void mirror(){
     else{
         return mirror();
     }
+    //mirror the image using the statr and end points
     for(int x = startRowPixel; x<endRowPixel; x++){
         for(int y = startColumnPixel; y<endColumnPixel; y++){
             if(startRowPixel == 0 && endRowPixel == SIZE){
@@ -572,7 +608,7 @@ void shuffle(){
     cin >> qrt1 >> qrt2 >> qrt3 >> qrt4;
 
 
-
+     // next 4 loops to extact the image quarters
     for (int i = 0; i < 128; i++)
     {
         for (int j = 0; j < 128; j++)
@@ -617,7 +653,7 @@ void shuffle(){
         }
     }
 
-
+    // see quarter one conditions as it may be one or two or three or four
     if (qrt1 == 1)
     {
         for (int i = 0 ; i < 128 ; i++)
@@ -678,7 +714,7 @@ void shuffle(){
         cout << "Not valid input";
     }
 
-
+    // see quarter two conditions as it may be one or two or three or four
     if (qrt2 == 1)
     {
         for (int i = 0 ; i < 128 ; i++)
@@ -738,7 +774,7 @@ void shuffle(){
     {
         cout << "Not valid input";
     }
-
+    // see quarter three conditions as it may be one or two or three or four
     if (qrt3 == 1)
     {
         for (int i = 128 ; i < 256 ; i++)
@@ -798,7 +834,7 @@ void shuffle(){
     {
         cout << "not valid input";
     }
-
+    // see quarter four conditions as it may be one or two or three or four
     if (qrt4 == 1)
     {
         for (int i = 128 ; i < 256 ; i++)
@@ -862,11 +898,13 @@ void shuffle(){
 }
 void blur(){
     unsigned char new_image[SIZE][SIZE][RGB];
+    // declare pixels average
     int pixels_average1;
     int pixels_average2;
     int pixels_average3;
     for (int i = 0; i < SIZE; i++ ){
         for (int j = 0; j< SIZE; j++) {
+            // bluring the image
 
             pixels_average1 = (image[i][j][0]+image[i][j-1][0]+image[i][j-2][0]+image[i][j+1][0]+image[i][j+2][0]+image[i-1][j][0]+image[i-1][j-1][0]+image[i-1][j-2][0]+image[i-1][j+1][0]+image[i-1][j+2][0]+image[i-2][j][0]+image[i-2][j-1][0]+image[i-2][j-2][0]+image[i-2][j+1][0]+image[i-2][j+2][0]+image[i+1][j][0]+image[i+1][j-1][0]+image[i+1][j-2][0]+image[i+1][j+1][0]+image[i+1][j+2][0]+image[i+2][j][0]+image[i+2][j-1][0]+image[i+2][j-2][0]+image[i+2][j+1][0]+image[i+2][j+2][0])/25;
             pixels_average2 = (image[i][j][1]+image[i][j-1][1]+image[i][j-2][1]+image[i][j+1][1]+image[i][j+2][1]+image[i-1][j][1]+image[i-1][j-1][1]+image[i-1][j-2][1]+image[i-1][j+1][1]+image[i-1][j+2][1]+image[i-2][j][1]+image[i-2][j-1][1]+image[i-2][j-2][1]+image[i-2][j+1][1]+image[i-2][j+2][1]+image[i+1][j][1]+image[i+1][j-1][1]+image[i+1][j-2][1]+image[i+1][j+1][1]+image[i+1][j+2][1]+image[i+2][j][1]+image[i+2][j-1][1]+image[i+2][j-2][1]+image[i+2][j+1][1]+image[i+2][j+2][1])/25;
